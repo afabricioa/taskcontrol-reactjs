@@ -4,12 +4,17 @@ import Axios from 'axios'
 
 export default function Grupo(props) {
 
+    const [flag, setFlag] = useState(0)
     const [alterar, setAlterar] = useState(false)
     const [grupo, setGrupo] = useState({
         id: '',
         grupo_nome: '',
         atividades: []
     })
+
+    function handleAlterar(nome){
+        setAlterar(true)
+    }
 
     useEffect(() => {
         console.log("component mounted")
@@ -19,11 +24,7 @@ export default function Grupo(props) {
             }).catch(error => {
                 console.log(error)
             })
-    }, [])
-
-    function handleAlterar(nome){
-        setAlterar(true)
-    }
+    }, [flag])
 
     function handleValor(event){
         if(event.key === 'Enter'){
@@ -41,9 +42,31 @@ export default function Grupo(props) {
         }
     }
 
+    function handleNovaAtividade(event){
+        if(event.key === 'Enter'){
+            setAlterar(false)
+            console.log("atividades: ", grupo.atividades)
+            const novoGrupo = { grupo_id: grupo.grupo_id, grupo_nome: event.target.value }
+            console.log(novoGrupo)
+
+            Axios.post('https://taskcontrolapp.herokuapp.com/taskcontrol/atividade',{
+                atividade_nome: event.target.value,
+                grupo: {
+                    grupo_id: grupo.grupo_id
+                }
+            })
+                .then(response => {
+                    console.log(response)
+                }).catch(error => {
+                    console.log(error)
+                })
+        }
+    }
+
     return (
 
         <div>
+           
             { !alterar && <h3 onClick={() => handleAlterar(grupo.grupo_nome)}>{ grupo.grupo_nome }</h3> }
             { alterar && <input type="text" placeholder="Novo nome" onKeyDown={handleValor}></input> }
             <ul>
@@ -55,6 +78,8 @@ export default function Grupo(props) {
                     </li>
                 )) }
             </ul>
+            <input text="text" placeholder="nova atividade" onKeyDown={handleNovaAtividade}></input>
+            
         </div>
     )
 }
