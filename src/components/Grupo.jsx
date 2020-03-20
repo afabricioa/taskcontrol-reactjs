@@ -12,6 +12,8 @@ export default function Grupo(props) {
         atividades: []
     })
 
+    const [showModal, setShowModal] = useState(false)
+
     function handleAlterar(nome){
         setAlterar(true)
     }
@@ -65,7 +67,7 @@ export default function Grupo(props) {
 
     return (
 
-        <div>
+        <div className="grupo">
            
             { !alterar && <h3 onClick={() => handleAlterar(grupo.grupo_nome)}>{ grupo.grupo_nome }</h3> }
             { alterar && <input type="text" placeholder="Novo nome" onKeyDown={handleValor}></input> }
@@ -79,7 +81,6 @@ export default function Grupo(props) {
                 )) }
             </ul>
             <input text="text" placeholder="nova atividade" onKeyDown={handleNovaAtividade}></input>
-            
         </div>
     )
 }

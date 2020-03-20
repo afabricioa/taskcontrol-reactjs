@@ -1,11 +1,17 @@
 import React from 'react';
 import './App.css';
 import Board from './components/Board'
+import NovoGrupo from './components/NovoGrupo';
 
 function App() {
   return (
     <div className="App">
-        <Board />
+        <div>
+            <Board />
+        </div>
+        <div>
+            <NovoGrupo />
+        </div>
     </div>
   );
 }

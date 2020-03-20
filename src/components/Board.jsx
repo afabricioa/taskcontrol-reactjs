@@ -16,7 +16,7 @@ export default function Board() {
     }, [grupo])
 
     return (
-        <div>
+        <div className="board">
             { grupo.map(g => (
                 <div key={g.grupo_id}>
                     <Grupo id={g.grupo_id}/>
