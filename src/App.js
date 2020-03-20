@@ -9,7 +9,7 @@ function App() {
         <div>
             <Board />
         </div>
-        <div>
+        <div className="newGrupo">
             <NovoGrupo />
         </div>
     </div>
