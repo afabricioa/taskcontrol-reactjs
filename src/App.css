@@ -9,7 +9,7 @@ body{
 
 .atividade{
   width: auto;
-  margin: 15px 0;
+  margin: 25px 0;
   padding: 0.2rem;
 }
 
@@ -40,7 +40,7 @@ h3{
   padding: 1em;
   margin: 1em;
   border: 1px solid black;
-  background-color: #ccc;
+  background-color: rgb(6, 36, 104);
   border-radius: 5px;
 }
 
@@ -97,9 +97,14 @@ h3{
 
 .newCard{
   background-color: transparent;
-  color: cornflowerblue;
+  color: #fff;
   border: none;
   font-size: 1.2rem;
+  margin-top: 40px;
+}
+
+.newCard:hover{
+  color: crimson
 }
 
 .newGrupo input{
@@ -113,8 +118,9 @@ h3{
 
 .newGrupo button{
   border: 0;
-  background: #37ad5b;
+  background: rgb(51, 190, 137);
   width: 200px;
+  height: 30px;
   border-radius: 5px;
   padding: 0.5rem 1rem;
   font-size: 0.8rem;
@@ -123,4 +129,15 @@ h3{
   text-transform: uppercase;
   margin: 1em;
   
+}
+
+.titulo{
+  background-color: rgb(51, 190, 137);
+  margin: -16px -16px 0 -16px;
+  padding: 15px 0 0 0;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  text-align: center;
+  color: white;
+  height: 40px;
 }

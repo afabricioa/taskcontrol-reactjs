@@ -6,7 +6,11 @@ import Grupo from './Grupo'
 const initialGrupoState = {
     loading: true,
     error: '',
-    grupo: []
+    grupo: {
+        grupo_id: null,
+        grupo_nome: '',
+        atividades: []
+    }
 }
 
 const reducerGrupo = (state, action) => {
@@ -42,6 +46,7 @@ export default function Board() {
                 })
                 .catch(error => {
                     dispatch({type: 'FETCH_GRUPO_ERROR'})
+                    console.log("error: ", error.response)
                 })
         }
 

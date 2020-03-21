@@ -81,7 +81,7 @@ export default function Grupo(props) {
 
     return (
         <div className="grupo">
-            { !alterar && <h3 onClick={() => handleAlterar(state.grupo.grupo_nome)}>{ state.grupo.grupo_nome }</h3> }
+            <div className="titulo">{ !alterar && <h3 onClick={() => handleAlterar(state.grupo.grupo_nome)}>{ state.grupo.grupo_nome }</h3> }</div>
             { alterar && <input type="text" placeholder="Novo nome" onKeyDown={handleValor}></input> }
             { state.grupo.atividades.map(atividade => (
             <div className="atividade" key={atividade.atividade_id} id={atividade.atividade_id} draggable onDragStart={(e) => onDragStart(e)}>
