@@ -1,17 +1,40 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useReducer } from 'react'
 import Atividade from './Atividade'
 import Axios from 'axios'
 import Popup from './Popup'
 
-export default function Grupo(props) {
-
-    const [flag, setFlag] = useState(0)
-    const [alterar, setAlterar] = useState(false)
-    const [grupo, setGrupo] = useState({
-        id: '',
+const initialState = {
+    error: '',
+    flag: 0,
+    grupo: {
+        grupo_id: null,
         grupo_nome: '',
         atividades: []
-    })
+    }
+}
+
+const reducer = (state, action) => {
+    switch(action.type){
+        case 'FETCH_SUCCESS': 
+            return {
+                grupo: action.payload,
+                error: ''
+            }
+        case 'FETCH_ERROR':
+            return {
+                grupo: [],
+                error: 'Something went wrong!'
+            }
+
+        default: 
+            return state
+    }
+}
+
+export default function Grupo(props) {
+    const [state, dispatch] = useReducer(reducer, initialState)
+
+    const [alterar, setAlterar] = useState(false)
 
     const [showModal, setShowModal] = useState(false)
 
@@ -19,45 +42,57 @@ export default function Grupo(props) {
         setAlterar(true)
     }
     useEffect(() => {
-        console.log("component mounted")
-        Axios.get(`https://taskcontrolapp.herokuapp.com/taskcontrol/grupo/${props.id}`)
-            .then(response => {
-                setGrupo(response.data)
-            }).catch(error => {
-                console.log(error)
-            })
-    }, [flag])
+        const fetchData = () => {
+            Axios.get(`https://taskcontrolapp.herokuapp.com/taskcontrol/grupo/${props.id}`)
+                .then(response => {
+                    dispatch({type: 'FETCH_SUCCESS', payload: response.data})
+                })
+                .catch(error => {
+                    dispatch({type: 'FETCH_ERROR'})
+                })
+        }
+        fetchData()
+    }, [state.flag])
+
 
     function handleValor(event){
         if(event.key === 'Enter'){
+            state.flag = state.flag + 1
             setAlterar(false)
-            console.log("atividades: ", grupo.atividades)
-            const novoGrupo = { grupo_id: grupo.grupo_id, grupo_nome: event.target.value }
-            console.log(novoGrupo)
+            const novoGrupo = { grupo_id: state.grupo.grupo_id, grupo_nome: event.target.value }
 
-            Axios.put('https://taskcontrolapp.herokuapp.com/taskcontrol/grupo',novoGrupo)
-                .then(response => {
-                    console.log(response)
-                }).catch(error => {
-                    console.log(error)
-                })
+            const putData = () => {
+                Axios.put('https://taskcontrolapp.herokuapp.com/taskcontrol/grupo',novoGrupo)
+            }
+            
+            putData()
         }
+    }
+
+    const onDragStart = e =>{
+        const target = e.target
+        e.dataTransfer.setData("id", target.id)
+
+        setTimeout(() => {
+            target.style.display = 'none'
+        }, 0)
+        
     }
 
     return (
         <div className="grupo">
-            { !alterar && <h3 onClick={() => handleAlterar(grupo.grupo_nome)}>{ grupo.grupo_nome }</h3> }
+            { !alterar && <h3 onClick={() => handleAlterar(state.grupo.grupo_nome)}>{ state.grupo.grupo_nome }</h3> }
             { alterar && <input type="text" placeholder="Novo nome" onKeyDown={handleValor}></input> }
-            { grupo.atividades.map(atividade => (
-            <div className="atividade" key={atividade.atividade_id} draggable onDragStart={ ()=> props.enviaAtividade(atividade) }>
+            { state.grupo.atividades.map(atividade => (
+            <div className="atividade" key={atividade.atividade_id} id={atividade.atividade_id} draggable onDragStart={(e) => onDragStart(e)}>
                 <Atividade 
                     atividade={atividade}
-                    grupo={grupo}
+                    grupo={state.grupo}
                 />
             </div>
             )) }
             <button className="newCard" onClick={() => setShowModal(true)}> Novo Card + </button>
-            { showModal && <Popup closePopup={() => setShowModal(false)} id={grupo.grupo_id} show={showModal} flag={1}>Cadastrar Nova Atividade</Popup> }
+            { showModal && <Popup closePopup={() => setShowModal(false)} id={state.grupo.grupo_id} show={showModal} flag={1}>Cadastrar Nova Atividade</Popup> }
         </div>
     )
 }
