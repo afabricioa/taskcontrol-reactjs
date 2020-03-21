@@ -3,6 +3,7 @@ import Popup from './Popup'
 
 export default function Atividade(props) {
     const [showModal, setShowModal] = useState(false)
+    
     return (
         <span onClick={() => setShowModal(true)} className="atividade">
             { props.atividade.atividade_nome }

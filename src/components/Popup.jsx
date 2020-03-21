@@ -13,7 +13,7 @@ function Popup(props) {
     function onSubmitHandler(e){
         console.log("id ", props.id)
         console.log("atividade: ", atividade)
-        if(props.flag == 1){
+        if(props.flag === 1){
             Axios.post('https://taskcontrolapp.herokuapp.com/taskcontrol/atividade',
                 {
                     atividade_nome: atividade,
@@ -25,7 +25,7 @@ function Popup(props) {
                 }).catch(error => {
                     console.log(error)
                 })
-        }else if(props.flag == 2){
+        }else if(props.flag === 2){
             Axios.put('https://taskcontrolapp.herokuapp.com/taskcontrol/atividade',
                 {   
                     atividade_id: props.id_atividade,

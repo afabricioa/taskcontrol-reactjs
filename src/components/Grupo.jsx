@@ -18,7 +18,6 @@ export default function Grupo(props) {
     function handleAlterar(nome){
         setAlterar(true)
     }
-
     useEffect(() => {
         console.log("component mounted")
         Axios.get(`https://taskcontrolapp.herokuapp.com/taskcontrol/grupo/${props.id}`)
@@ -46,13 +45,11 @@ export default function Grupo(props) {
     }
 
     return (
-
         <div className="grupo">
-           
             { !alterar && <h3 onClick={() => handleAlterar(grupo.grupo_nome)}>{ grupo.grupo_nome }</h3> }
             { alterar && <input type="text" placeholder="Novo nome" onKeyDown={handleValor}></input> }
             { grupo.atividades.map(atividade => (
-            <div className="atividade" key={atividade.atividade_id}>
+            <div className="atividade" key={atividade.atividade_id} draggable onDragStart={ ()=> props.enviaAtividade(atividade) }>
                 <Atividade 
                     atividade={atividade}
                     grupo={grupo}
