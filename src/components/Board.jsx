@@ -46,7 +46,7 @@ export default function Board() {
                 })
                 .catch(error => {
                     dispatch({type: 'FETCH_GRUPO_ERROR'})
-                    console.log("error: ", error.response)
+                    console.log(error.response)
                 })
         }
 
